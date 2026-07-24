@@ -1,0 +1,63 @@
+# docker/docker-compose.yml
+#
+# Local development environment for AgAI-33. Brings up a plain, actively
+# maintained Asterisk instance (not a FreePBX GUI wrapper -- see README
+# "Docker Image Decision" for why) with ARI enabled, so the ARI client
+# (core/ari_client.py) and call router (api/ari_router.py) can be exercised
+# end to end without waiting on real PBX access from a client.
+#
+# Usage:
+#   cd docker
+#   docker compose up -d
+#
+# Asterisk ARI:  http://localhost:8088/ari
+# SIP:            localhost:5060 (register a softphone, e.g. Zoiper or
+#                  MicroSIP, using testphone/changeme_sip_secret from
+#                  asterisk-conf/pjsip.conf, then dial any extension to
+#                  place a test call into the Stasis app)
+#
+# This proves the ARI connection, call-answer, and audio-bridge code paths
+# function against a real Asterisk instance rather than only against mocks.
+# It is not a substitute for validating against a client's actual FreePBX
+# deployment (SIP trunk provider, network topology, and FreePBX-specific
+# dialplan wrapping will all differ in production).
+
+services:
+  asterisk:
+    image: andrius/asterisk:22.8-cert3_debian-trixie
+    container_name: agai33_asterisk
+    restart: unless-stopped
+    ports:
+      - "8088:8088"     # Asterisk ARI / HTTP interface
+      - "5060:5060/udp" # SIP signaling
+      - "10000-10100:10000-10100/udp"  # RTP media range
+    volumes:
+      - ./asterisk-conf/ari.conf:/etc/asterisk/ari.conf:ro
+      - ./asterisk-conf/http.conf:/etc/asterisk/http.conf:ro
+      - ./asterisk-conf/extensions.conf:/etc/asterisk/extensions.conf:ro
+      - ./asterisk-conf/pjsip.conf:/etc/asterisk/pjsip.conf:ro
+    networks:
+      - agai33_net
+
+  agai33_api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: agai33_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "8001:8001"  # externalMedia RTP receiver port (app_port + 1)
+    env_file:
+      - ../.env
+    environment:
+      - ASTERISK_ARI_BASE_URL=http://asterisk:8088/ari
+      - ASTERISK_AMI_HOST=asterisk
+    depends_on:
+      - asterisk
+    networks:
+      - agai33_net
+
+networks:
+  agai33_net:
+    driver: bridge

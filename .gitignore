@@ -1,0 +1,35 @@
+# Environment / secrets -- never commit real credentials
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker (local dev artifacts only, not the compose/config files themselves)
+docker/asterisk-data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
