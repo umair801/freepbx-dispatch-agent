@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dispatch Console — Datawebify</title>
+<meta name="description" content="Live AI dispatch console: technician roster, active job board, and dispatch simulator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div class="console">
+
+  <!-- ── Header / Status Strip ─────────────────────────────────── -->
+  <header class="statusbar">
+    <div class="statusbar__brand">
+      <span class="statusbar__dot" aria-hidden="true"></span>
+      <span class="statusbar__title">DISPATCH CONSOLE</span>
+      <span class="statusbar__sub">Datawebify · AI Field Dispatch</span>
+    </div>
+
+    <div class="statusbar__metrics" id="metrics-strip">
+      <div class="metric">
+        <span class="metric__value" id="metric-total">—</span>
+        <span class="metric__label">Jobs today</span>
+      </div>
+      <div class="metric">
+        <span class="metric__value" id="metric-assigned">—</span>
+        <span class="metric__label">Assigned</span>
+      </div>
+      <div class="metric">
+        <span class="metric__value" id="metric-unassigned">—</span>
+        <span class="metric__label">Unassigned</span>
+      </div>
+      <div class="metric">
+        <span class="metric__value" id="metric-rate">—</span>
+        <span class="metric__label">Assignment rate</span>
+      </div>
+    </div>
+
+    <div class="statusbar__sync">
+      <span class="sync-dot" id="sync-dot" aria-hidden="true"></span>
+      <span id="sync-label">connecting…</span>
+    </div>
+  </header>
+
+  <!-- ── Main Grid: Roster | Job Board ─────────────────────────── -->
+  <main class="grid">
+
+    <!-- Technician Roster (left rail) -->
+    <section class="panel roster" aria-labelledby="roster-heading">
+      <div class="panel__head">
+        <h2 id="roster-heading">Technicians</h2>
+        <span class="panel__count" id="roster-count">0</span>
+      </div>
+      <div class="panel__body" id="roster-list">
+        <div class="empty-state">Loading roster…</div>
+      </div>
+    </section>
+
+    <!-- Job Board (main, wide) -->
+    <section class="panel board" aria-labelledby="board-heading">
+      <div class="panel__head">
+        <h2 id="board-heading">Active Dispatch Board</h2>
+        <div class="board__filters" id="status-filters">
+          <button class="chip chip--active" data-status="">All</button>
+          <button class="chip" data-status="pending">Pending</button>
+          <button class="chip" data-status="assigned">Assigned</button>
+          <button class="chip" data-status="en_route">En Route</button>
+          <button class="chip" data-status="in_progress">In Progress</button>
+          <button class="chip" data-status="completed">Completed</button>
+        </div>
+      </div>
+      <div class="panel__body board__list" id="job-list">
+        <div class="empty-state">Loading jobs…</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Dispatch Timeline (job detail) ────────────────────────── -->
+  <section class="panel timeline-panel" id="timeline-panel" aria-labelledby="timeline-heading" hidden>
+    <div class="panel__head">
+      <h2 id="timeline-heading">Job Timeline</h2>
+      <button class="icon-btn" id="timeline-close" aria-label="Close timeline">✕</button>
+    </div>
+    <div class="panel__body" id="timeline-body"></div>
+  </section>
+
+  <!-- ── Simulate Call — slide-up dock ─────────────────────────── -->
+  <div class="simulator" id="simulator">
+    <button class="simulator__toggle" id="simulator-toggle" aria-expanded="false" aria-controls="simulator-panel">
+      <span class="simulator__toggle-dot" aria-hidden="true"></span>
+      Simulate a call
+    </button>
+
+    <div class="simulator__panel" id="simulator-panel" hidden>
+      <div class="simulator__head">
+        <h2>Simulate a Dispatch Call</h2>
+        <p>Type what a customer would say. This goes through the same AI pipeline as a real phone call — intent parsing, technician matching, and dispatch — no phone or SIP setup required.</p>
+      </div>
+
+      <form class="simulator__form" id="simulator-form">
+        <div class="field-row">
+          <label for="sim-name">Customer name</label>
+          <input type="text" id="sim-name" placeholder="John Smith" autocomplete="off">
+        </div>
+        <div class="field-row">
+          <label for="sim-phone">Phone</label>
+          <input type="text" id="sim-phone" placeholder="+1 555 123 4567" autocomplete="off">
+        </div>
+        <div class="field-row field-row--full">
+          <label for="sim-message">Message</label>
+          <textarea id="sim-message" rows="2" placeholder="AC is out at 123 Main St, it's urgent" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" id="sim-submit">
+          <span id="sim-submit-label">Send</span>
+        </button>
+      </form>
+
+      <div class="simulator__thread" id="simulator-thread" aria-live="polite"></div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

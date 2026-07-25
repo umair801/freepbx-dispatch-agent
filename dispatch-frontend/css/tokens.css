@@ -1,0 +1,68 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — Dispatch Console
+   Palette: deep green-black ops-board background, warm off-white
+   text, signal-green for live/assigned states, burnt-orange for
+   urgent/pending. Mono face for machine-state data (job IDs,
+   statuses, timestamps), sans face for human-facing labels/copy.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Color */
+  --bg:            #0E1512;
+  --surface:       #1A2420;
+  --surface-raised:#212D27;
+  --border:        #2A3832;
+  --text:          #F5F2EA;
+  --text-dim:      #9BA69E;
+  --text-faint:    #6B7280;
+
+  --signal-green:      #3D8361;
+  --signal-green-bright:#4EA378;
+  --signal-orange:     #C9642E;
+  --signal-orange-bright:#E07A3E;
+  --signal-red:        #B5443A;
+  --signal-blue:       #4A7A9C;
+
+  /* Status → color mapping */
+  --status-pending:     var(--signal-orange);
+  --status-assigned:    var(--signal-green);
+  --status-en-route:    var(--signal-blue);
+  --status-in-progress: #C9A73D;
+  --status-completed:   var(--text-faint);
+  --status-cancelled:   var(--signal-red);
+  --status-unassigned:  var(--signal-red);
+
+  /* Type */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+
+  --fs-xs:   0.7rem;
+  --fs-sm:   0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md:   1.05rem;
+  --fs-lg:   1.375rem;
+  --fs-xl:   1.75rem;
+
+  /* Spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  /* Shape */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-med: 320ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-med: 0ms; }
+}
