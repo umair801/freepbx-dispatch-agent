@@ -1,40 +1,45 @@
 /* ─────────────────────────────────────────────────────────────
    Design tokens — Dispatch Console
-   Palette: deep green-black ops-board background, warm off-white
-   text, signal-green for live/assigned states, burnt-orange for
-   urgent/pending. Mono face for machine-state data (job IDs,
-   statuses, timestamps), sans face for human-facing labels/copy.
+   Matches the Datawebify portfolio site's design language:
+   light background, indigo/violet primary, soft card shadows,
+   system sans font stack.
    ───────────────────────────────────────────────────────────── */
 
 :root {
-  /* Color */
-  --bg:            #0E1512;
-  --surface:       #1A2420;
-  --surface-raised:#212D27;
-  --border:        #2A3832;
-  --text:          #F5F2EA;
-  --text-dim:      #9BA69E;
-  --text-faint:    #6B7280;
+  /* Color — pulled directly from portfolio style.css */
+  --bg:            #f9fafb;
+  --surface:       #ffffff;
+  --surface-raised:#ffffff;
+  --border:        #e5e7eb;
+  --text:          #1f2937;
+  --text-dim:      #4b5563;
+  --text-faint:    #6b7280;
 
-  --signal-green:      #3D8361;
-  --signal-green-bright:#4EA378;
-  --signal-orange:     #C9642E;
-  --signal-orange-bright:#E07A3E;
-  --signal-red:        #B5443A;
-  --signal-blue:       #4A7A9C;
+  --primary:        #6366f1;
+  --primary-bright: #7c7ff2;
+  --secondary:      #8b5cf6;
+  --gradient-start:#667eea;
+  --gradient-end:  #764ba2;
+
+  --signal-green:        #10b981;
+  --signal-green-bright: #10b981;
+  --signal-orange:       #f59e0b;
+  --signal-orange-bright:#f59e0b;
+  --signal-red:          #ef4444;
+  --signal-blue:         #3b82f6;
 
   /* Status → color mapping */
   --status-pending:     var(--signal-orange);
-  --status-assigned:    var(--signal-green);
+  --status-assigned:    var(--primary);
   --status-en-route:    var(--signal-blue);
-  --status-in-progress: #C9A73D;
-  --status-completed:   var(--text-faint);
+  --status-in-progress: #ca8a04;
+  --status-completed:   var(--signal-green);
   --status-cancelled:   var(--signal-red);
   --status-unassigned:  var(--signal-red);
 
   /* Type */
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   --fs-xs:   0.7rem;
   --fs-sm:   0.8125rem;
@@ -53,14 +58,18 @@
   --sp-7: 48px;
 
   /* Shape */
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  --radius-sm: 5px;
+  --radius-md: 10px;
   --radius-lg: 14px;
 
   /* Motion */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-fast: 150ms;
   --dur-med: 320ms;
+
+  /* Shadow, matches portfolio card shadow */
+  --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-card-hover: 0 10px 24px rgba(99,102,241,0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {
