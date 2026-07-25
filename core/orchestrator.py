@@ -121,7 +121,7 @@ async def node_confirm_dispatch(state: dict) -> dict:
     dispatch, response_text = await confirm_dispatch(request, selected_match, message.session_id)
 
     if dispatch:
-        state["dispatch"] = dispatch.model_dump()
+        state["dispatch"] = dispatch.model_dump(mode="json")
 
     state["response_text"] = response_text
 
@@ -145,7 +145,7 @@ async def node_lookup_jobs(state: dict) -> dict:
 
     jobs, response_text = await lookup_dispatch_jobs(message.customer_phone, message.session_id)
 
-    state["existing_jobs"] = [j.model_dump() for j in jobs]
+    state["existing_jobs"] = [j.model_dump(mode="json") for j in jobs]
     state["response_text"] = response_text
 
     return state

@@ -217,11 +217,12 @@
 
 .skill-tag {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--primary);
-  background: rgba(99, 102, 241, 0.08);
-  border: 1px solid transparent;
-  padding: 1px 7px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #4f46e5;
+  background: rgba(99, 102, 241, 0.14);
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  padding: 2px 8px;
   border-radius: 4px;
 }
 
