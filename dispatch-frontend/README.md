@@ -24,14 +24,31 @@ Append `?api=https://your-backend-url` to the URL to override the API base
 without touching code — useful for demoing against a client's staging
 backend or a Railway preview URL.
 
-## Deployment (planned: dispatch.datawebify.com)
+## Deployment (Railway → dispatch.datawebify.com)
 
-This is a static site — copy the folder as-is to Railway's static hosting,
-Netlify, Vercel, or any static file host. Once deployed, it will
-auto-detect it's not on `localhost` and point at
-`https://dispatch-api.datawebify.com` by default (see `js/api.js`,
-`resolveApiBase()`). Update that fallback URL if the production API
-domain changes.
+This is a static site with a `package.json` that runs it via `serve`, so
+Railway auto-detects it as a Node service:
+
+1. In Railway, create a **new service** in the same project as the backend
+   (or a separate project, either works), **Deploy from GitHub repo**,
+   same repo as the backend.
+2. In that service's **Settings → Source**, set **Root Directory** to
+   `dispatch-frontend`. This tells Railway to build/run only this
+   subfolder, ignoring the Python backend beside it.
+3. Railway detects `package.json`, runs `npm install` then `npm start`
+   (`serve -s . -l $PORT`), no further config needed.
+4. Once deployed, add a custom domain in **Settings → Networking**:
+   `dispatch.datawebify.com`, then add the CNAME Railway gives you to your
+   DNS provider.
+5. Visit `https://dispatch.datawebify.com` — it will auto-detect it's not
+   on `localhost` and point at `https://dispatch-api.datawebify.com` (see
+   `js/api.js`, `resolveApiBase()`). Update that fallback URL if the
+   production API domain ever changes.
+
+Alternatively this deploys identically to Netlify, Vercel, or any static
+host — the `package.json`/`serve` setup is only needed for Railway's
+auto-detection; other static hosts serve `index.html` directly with no
+build step at all.
 
 ## File map
 

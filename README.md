@@ -164,6 +164,12 @@ AgAI_33_FreePBX_Dispatch_Agent/
 ├── docker/
 │   ├── docker-compose.yml             # NEW -- local FreePBX dev environment
 │   └── extensions_custom.conf         # NEW -- Stasis app dialplan
+├── dispatch-frontend/                 # NEW -- dispatch.datawebify.com dashboard
+│   ├── index.html                     # Single-page shell
+│   ├── css/                           # Tokens, layout, components
+│   ├── js/                            # Roster, board, timeline, simulator, API client
+│   ├── package.json                   # Railway static-serve config
+│   └── README.md                      # Local run + deployment instructions
 ├── tests/
 │   └── test_dispatch_agent.py         # NEW -- ranking logic, verified passing
 ├── Dockerfile
@@ -279,17 +285,20 @@ A client's existing engine calls this endpoint directly -- the dispatch logic, t
 
 ---
 
-## Frontend Dashboard (Planned, Not Yet Built)
+## Frontend Dashboard
 
-Everything shipped so far is the backend: the agent pipeline, the Asterisk/ARI integration, and the API (planned deployment target `dispatch-api.datawebify.com`). There is no dashboard UI yet -- a client visiting the project today would see JSON API responses, not a visual interface, which is a real gap for a non-technical evaluator who wants to *see* the system working, not read `/metrics` output.
+A live dashboard for `dispatch.datawebify.com` ships in `dispatch-frontend/`
+(plain HTML/CSS/ES modules, no build step). It gives a non-technical
+evaluator something to *see* rather than raw JSON:
 
-Planned scope for `dispatch.datawebify.com` (the frontend, separate from the API domain above):
-- **Live dispatch board** -- active jobs by status (pending/assigned/en route/in progress/completed), pulled from `GET /metrics` and a new paginated jobs-list endpoint
-- **Technician roster view** -- current status, skills, queue depth per technician, so a non-technical viewer can see *why* a given technician was matched to a job
-- **Dispatch timeline** -- a job's lifecycle from intent parsed through technician assigned through completion, giving visual proof the ranking logic (skill + proximity + queue) actually drove the decision, not just a black-box assignment
-- **A simple "simulate a call" demo widget** -- lets a client type a request ("AC is out, 123 Main St, it's urgent") into a web form that hits `POST /dispatch/webhook/web` and see the dispatch happen live, without needing a real phone call or SIP setup at all
+- **Live dispatch board** -- active jobs by status, polling `GET /dispatch/jobs` every 8 seconds
+- **Technician roster view** -- status, skills, queue depth per technician, from `GET /dispatch/technicians`, so a viewer can see *why* a given technician was matched to a job
+- **Dispatch timeline** -- click any job to see its lifecycle (intent parsed -> assigned -> en route -> in progress -> completed), reconstructed client-side from the job record
+- **"Simulate a call" widget** -- a docked panel that lets anyone type a request ("AC is out, 123 Main St, it's urgent") and hit `POST /dispatch/webhook/web` directly, watching the same pipeline a real phone call would trigger, no SIP setup required
 
-This is the natural next phase once the backend is pushed and stable. It's excluded from this session's scope, which was the FreePBX/dispatch capability gap specifically -- but it's the highest-leverage next addition for making this portfolio piece land with non-technical clients.
+Styled to match the Datawebify brand (indigo/violet, matching `style.css` on the main portfolio site) rather than a generic admin template. See `dispatch-frontend/README.md` for local run and deployment instructions.
+
+**Verified working end to end**: tested against a live local backend and Supabase instance -- skill-based technician matching visibly picks the correct technician per job type (e.g. a plumbing request routes to a plumbing-skilled technician, not just whoever's free), roster and board update live after a dispatch, and the full loop (intent parse -> match -> confirm -> notify -> board refresh) completes with no errors.
 
 ---
 

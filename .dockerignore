@@ -6,3 +6,7 @@ __pycache__/
 .git/
 .pytest_cache/
 docker/asterisk-data/
+
+# Frontend is deployed separately as a static site (dispatch.datawebify.com);
+# the backend Docker image doesn't need it.
+dispatch-frontend/

@@ -1,0 +1,12 @@
+{
+  "name": "dispatch-console-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static frontend for the AgAI-33 dispatch console. No build step -- plain HTML/CSS/ES modules served as-is.",
+  "scripts": {
+    "start": "serve -s . -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
